@@ -1,0 +1,242 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+
+}
+
+
+/* Pagina de abrir caixa */
+.i-logo-img{
+    text-align: center;
+    padding: 20px 0;
+}
+
+#caixa{
+    margin: auto;
+    display: block; 
+    width: 100px;
+}
+
+#abrir-caixa{
+    padding: 20px 20px;
+    font-size: 18px;
+    background-color: #2aa306;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 1.3s ease;
+    margin: auto; 
+    display: block;
+    width: 200px; 
+    height: 70px;
+
+}
+
+a{
+    text-decoration: none;
+}
+
+#abrir-caixa:hover {
+    background-color: #94ad03;
+}
+
+/* FIM Pagina de abrir caixa */
+
+
+
+/*========================================================================================== */
+
+
+
+/* Login.php */
+
+main {
+    text-align: center;
+    overflow-y: auto;
+}
+
+.l-logo-img{
+    text-align: center;
+    padding: 20px 0;
+
+}
+
+
+form {
+    width: 300px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-php{
+    color: white;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #d89400;
+    font-weight: bold;
+    font-size: 18px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #252317;
+}
+
+
+/*Fim login.php */
+
+/*========================================================================================== */
+
+
+
+/* Inserir produtos */
+
+
+
+.menu-php{
+    width: 200px;
+    height: 100vh;
+    float: left; 
+    background-color: rgb(0, 0, 0);
+}
+
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #333; /* Cor de fundo da barra lateral */
+    color: #fff; /* Cor do texto na barra lateral */
+}
+
+.inserir-logo-img img{
+    padding: 20px;
+}
+
+nav ul {
+    list-style-type: none; 
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    padding: 10px 20px;
+    border-bottom: 1px solid #555; /* Linha divisória entre os itens de menu */
+    margin-top: 70px;
+
+    
+}
+
+nav ul li:last-child {
+    border-bottom: none; /* Remove a linha divisória do último item de menu */
+}
+
+nav ul li a {
+    text-decoration: none;
+    display: block;
+    color: rgb(250, 246, 238);
+}
+
+nav ul li a:hover {
+    background-color: #555; /* Cor de fundo quando o mouse passa por cima */
+}
+
+
+
+
+/* Fim Inserir produtos */
+
+
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    padding: 10px 20px;
+    border-bottom: 1px solid #555;
+}
+
+nav ul li:last-child {
+    border-bottom: none;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+}
+
+nav ul li a:hover {
+    background-color: #555;
+}
+
+.inserir-produtos {
+    margin-left: 220px; /* Largura do menu + margem */
+    padding: 20px;
+    text-align: center;
+    margin-top: 0 auto;
+}
+
+.inserir-produtos h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: calc(100% - 10px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
