@@ -2,7 +2,14 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #000000;
 
+
+    
+}
+
+.menusDel{
+    background-color: #c9c9c9;
 }
 
 
@@ -32,6 +39,7 @@ body {
     display: block;
     width: 200px; 
     height: 70px;
+    margin-top: 30px;
 
 }
 
@@ -51,8 +59,6 @@ a{
 
 
 
-/* Login.php */
-
 main {
     text-align: center;
     overflow-y: auto;
@@ -65,7 +71,7 @@ main {
 }
 
 
-form {
+.form-login {
     width: 300px;
     margin: 0 auto;
     border-radius: 8px;
@@ -87,7 +93,7 @@ input[type="password"] {
     box-sizing: border-box;
 }
 
-button {
+.button-login {
     width: calc(100% - 20px);
     padding: 10px;
     margin: 10px 0;
@@ -106,14 +112,9 @@ button:hover {
 }
 
 
-/*Fim login.php */
-
-/*========================================================================================== */
 
 
-
-/* Inserir produtos */
-
+/* Menu */
 
 
 .menu-php{
@@ -168,50 +169,72 @@ nav ul li a:hover {
 
 
 
+/*Fim Menu */
 
-/* Fim Inserir produtos */
+/*========================================================================================== */
 
 
 
-nav ul {
+/* Inserir produtos */
+.inserir-produtos {
+    padding: 20px; /* Adiciona um espaçamento interno */
+    border-radius: 8px; /* Adiciona bordas arredondadas */
+    width: 60%;
+    position: absolute; /* Define a posição absoluta */
+    top: 50%; /* Alinha o topo a 50% da altura da janela */
+    left: 50%; /* Alinha a esquerda a 50% da largura da janela */
+    transform: translate(-50%, -50%); /* Move o elemento para o centro */
+    text-align: center; /* Alinha o conteúdo no centro */
+    
+
+}
+
+@media (max-width: 768px) {
+    .inserir-produtos {
+        width: 90%; /* Reduz a largura para telas menores */
+    }
+}
+
+
+
+.nav-inserir-produtos ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-nav ul li {
+.nav-inserir-produtos ul li {
     padding: 10px 20px;
     border-bottom: 1px solid #555;
 }
 
-nav ul li:last-child {
+.nav-inserir-produtos ul li:last-child {
     border-bottom: none;
 }
 
-nav ul li a {
+.nav-inserir-produtos ul li a {
     color: #fff;
     text-decoration: none;
     display: block;
 }
 
-nav ul li a:hover {
+.nav-inserir-produtos ul li a:hover {
     background-color: #555;
 }
 
-.inserir-produtos {
-    margin-left: 220px; /* Largura do menu + margem */
-    padding: 20px;
-    text-align: center;
-    margin-top: 0 auto;
-}
 
-.inserir-produtos h2 {
-    margin-bottom: 20px;
-}
+
+
+/* Estilos para os elementos do formulário */
 
 .form-group {
+    display: inline-block;
+    vertical-align: top; /* Alinha os elementos pela parte superior */
     margin-bottom: 20px;
     text-align: left;
+    padding: 80px;
+    
+ 
 }
 
 .form-group label {
@@ -220,23 +243,28 @@ nav ul li a:hover {
 }
 
 .form-group input {
-    width: calc(100% - 10px);
-    padding: 10px;
+    width: calc(100% - 10px); /* Define a largura para ocupar metade do espaço disponível */
+    padding: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    border-radius: 10px;
+    
 }
 
+/* Estilos para os botões */
 button {
-    padding: 10px 20px;
-    background-color: #007bff;
+    padding: 20px 25px;
+    background-color: #242323;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    width: 350px;
+    border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-size: 20px;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #b39800;
 }

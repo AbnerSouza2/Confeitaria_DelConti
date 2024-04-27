@@ -26,11 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["acao"]) && $_POST["ac
 
 
     <main>
-        <form action="login.php" method="post">
+        <form class="form-login" action="login.php" method="post">
             <h1 class="login-php">Login:</h1>
             <input type="text" name="username" placeholder="Usuário" required><br>
             <input type="password" name="password" placeholder="Senha" required><br>
-            <button type="submit">Entrar</button>
+            <button class="button-login" type="submit">Entrar</button>
         </form>
     </main>
 
