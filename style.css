@@ -3,13 +3,11 @@ body {
     margin: 0;
     padding: 0;
     background-color: #000000;
-
-
     
 }
 
 .menusDel{
-    background-color: #c9c9c9;
+    background-color: #ffffffb9;
 }
 
 
@@ -83,7 +81,7 @@ main {
     font-weight: bold;
 }
 
-input[type="text"],
+.form-login input[type="text"],
 input[type="password"] {
     width: calc(100% - 20px);
     padding: 10px;
@@ -185,7 +183,6 @@ nav ul li a:hover {
     left: 50%; /* Alinha a esquerda a 50% da largura da janela */
     transform: translate(-50%, -50%); /* Move o elemento para o centro */
     text-align: center; /* Alinha o conteúdo no centro */
-    
 
 }
 
@@ -196,53 +193,21 @@ nav ul li a:hover {
 }
 
 
-
-.nav-inserir-produtos ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.nav-inserir-produtos ul li {
-    padding: 10px 20px;
-    border-bottom: 1px solid #555;
-}
-
-.nav-inserir-produtos ul li:last-child {
-    border-bottom: none;
-}
-
-.nav-inserir-produtos ul li a {
-    color: #fff;
-    text-decoration: none;
-    display: block;
-}
-
-.nav-inserir-produtos ul li a:hover {
-    background-color: #555;
-}
-
-
-
-
-/* Estilos para os elementos do formulário */
-
-.form-group {
+.form-group-inserir {
     display: inline-block;
     vertical-align: top; /* Alinha os elementos pela parte superior */
     margin-bottom: 20px;
     text-align: left;
-    padding: 80px;
-    
- 
+    padding: 50px;
+
 }
 
-.form-group label {
+.form-group-inserir label {
     display: block;
     margin-bottom: 5px;
 }
 
-.form-group input {
+.form-group-inserir input {
     width: calc(100% - 10px); /* Define a largura para ocupar metade do espaço disponível */
     padding: 15px;
     border: 1px solid #ccc;
@@ -267,4 +232,46 @@ button {
 
 button:hover {
     background-color: #b39800;
+}
+
+
+
+/*Produtos cadastrados =====================*/
+
+.container-cadastrados {
+    max-width: 1000px; /* Define a largura máxima */
+    margin: 0 auto; /* Centraliza horizontalmente */
+    padding: 20px; /* Adiciona espaço interno */
+    border-radius: 8px; /* Adiciona bordas arredondadas */
+    text-align: center; /* Alinha o conteúdo no centro */
+}
+
+
+.table {
+    width: 100%;
+    
+    border: 5px solid rgb(48, 46, 46);
+    border-radius: 7px;
+
+}
+
+
+.table th,
+.table td {
+    padding: 10px;
+    border-bottom: 1px solid #141313;
+    text-align: left;
+    font-weight: bold;
+}
+
+.table th {
+    background-color: #f1c70d;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #f2f2f2;
 }
