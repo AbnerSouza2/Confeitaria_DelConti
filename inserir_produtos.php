@@ -28,9 +28,9 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
                     <ul>
                         <li><a href="inserir_produtos.php">Inserir Produtos</a></li>
                         <li><a href="produtos_cadastrados.php">Produtos Cadastrados</a></li>
-                        <li><a href="#">Lançar Produtos</a></li>
-                        <li><a href="#">Financeiro</a></li>
-                        <li><a href="#">Clientes Fiado</a></li>
+                        <li><a href="vendas.php">Vender Produto</a></li>
+                        <li><a href="financeiro.php">Financeiro</a></li>
+                        <li><a href="clientes_fiados.php">Clientes Fiado</a></li>
                     </ul>
                 </nav>
             </div>
@@ -38,7 +38,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
 
         <div class="inserir-produtos">
         <h1>Inserir Produtos</h1>
-        <form action="processar_insercao.php" method="post">
+        <form action="bd_produtos.php" method="post">
             <div class="form-group-inserir">
                 <label for="nome_produto">Nome do Produto:</label>
                 <input type="text" id="nome_produto" name="nome_produto" placeholder="Produto" required>

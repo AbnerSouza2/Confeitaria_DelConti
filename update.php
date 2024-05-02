@@ -11,7 +11,7 @@ if (!empty($_POST['id']) && !empty($_POST['nome']) && !empty($_POST['valor'])) {
     // Atualizar o produto no banco de dados
     $sqlUpdate = "UPDATE produtos SET nome='$nome', valor='$valor' WHERE id=$id";
     if ($mysqli->query($sqlUpdate) === TRUE) {
-        header('Location: produtos_cadastrados.php');
+        header('Location: inserir_produtos.php');
     } else {
         echo "Erro ao atualizar produto: " . $mysqli->error;
     }

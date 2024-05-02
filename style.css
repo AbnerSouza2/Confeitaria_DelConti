@@ -3,11 +3,12 @@ body {
     margin: 0;
     padding: 0;
     background-color: #000000;
-    
+   
 }
 
 .menusDel{
     background-color: #ffffffb9;
+
 }
 
 
@@ -244,13 +245,15 @@ button:hover {
     padding: 20px; /* Adiciona espaço interno */
     border-radius: 8px; /* Adiciona bordas arredondadas */
     text-align: center; /* Alinha o conteúdo no centro */
+    border: 1px solid #ccc;
+   
 }
 
 
 .table {
     width: 100%;
-    border: 5px solid rgb(48, 46, 46);
-    border-radius: 7px;
+    border-radius: 5px;
+
 
 }
 
@@ -288,12 +291,20 @@ button:hover {
     padding: 20px; /* Adiciona espaço interno */
     border-radius: 8px; /* Adiciona bordas arredondadas */
     text-align: center; /* Alinha o conteúdo no centro */
+
 }
+
+th .editar-produto {
+    width: 250px;
+}
+
 .container-edit.edit-title {
     background-color: #f1c70d;
     padding: 10px;
     border-radius: 7px;
     margin-bottom: 20px;
+    
+    
 }
 
 .container-cadastrados.edit-label {
@@ -302,6 +313,7 @@ button:hover {
 }
 
 .edit-input {
+    
     width: 100%;
     padding: 10px;
     border-radius: 7px;
@@ -316,4 +328,138 @@ button:hover {
     border: none;
     border-radius: 7px;
     cursor: pointer;
+}
+
+/*Paginação*/
+
+.pagination {
+    display: flex; /* Usa flexbox para centralizar */
+    justify-content: center; /* Centraliza horizontalmente */
+    margin-top: 20px; /* Adiciona margem superior para espaçamento */
+}
+
+.pagination a {
+    margin: 0 5px; /* Adiciona um espaço entre os links */
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination .active {
+    font-weight: bold; /* Destaca a página atual */
+}
+
+
+/*Lançar vendas =======================*/
+
+.container-lancar-vendas {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; /* Isso fará com que o contêiner ocupe toda a altura da tela */
+}
+
+.form-venda {
+    text-align: left;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-venda label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    height: 30px;
+}
+
+.form-venda select,
+.form-venda input[type="radio"] {
+    width: 70%;
+    margin-bottom: 20px;
+   
+}
+
+.form-venda select{
+    height: 30px;
+}
+
+.pagamento-options {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.pagamento-options label {
+    display: inline-block;
+    margin-right: 10px;
+    
+}
+
+.pagamento-options input[type="radio"] {
+    display: inline-block;
+    margin-right: 5px;
+   
+}
+
+.btn-confirmar-venda {
+    padding: 10px 20px;
+    background-color: #2aa306;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-confirmar-venda:hover {
+    background-color: #94ad03;
+}
+
+
+
+/*Financeiro===============*/
+
+.container-financeiro {
+    width: 80%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow-x: auto; /* Adicionado para rolar horizontalmente se necessário */
+}
+
+h1 {
+    text-align: center;
+}
+
+.table-financeiro {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-financeiro th,
+.table-financeiro td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.table-financeiro th {
+    background-color: #f1c70d;
+    color: #333;
+}
+
+.table-financeiro tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table-financeiro tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+#btn-filtro button{
+    background-color: green;
 }

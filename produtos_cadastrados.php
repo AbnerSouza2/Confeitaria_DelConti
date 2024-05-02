@@ -1,12 +1,24 @@
 <?php
-
 include("conexao.php");
 
-$consulta = "select * from produtos";
+// Configurações de paginação
+$produtosPorPagina = 10;
+$paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+$offset = ($paginaAtual - 1) * $produtosPorPagina;
+
+// Consulta SQL com limitação de resultados
+$consulta = "SELECT * FROM produtos LIMIT $offset, $produtosPorPagina";
 $con = $mysqli->query($consulta) or die($mysqli->error);
 
-?>
+// Contagem total de produtos
+$totalProdutos = $mysqli->query("SELECT COUNT(*) AS total FROM produtos")->fetch_assoc()['total'];
+$totalPaginas = ceil($totalProdutos / $produtosPorPagina);
 
+// Função para gerar links de paginação
+function paginaLink($pagina) {
+    return "?pagina=$pagina";
+}
+?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -27,10 +39,10 @@ $con = $mysqli->query($consulta) or die($mysqli->error);
             <nav class="nav-inserir-produtos">
                 <ul>
                     <li><a href="inserir_produtos.php">Inserir Produtos</a></li>
-                    <li><a href="#">Produtos Cadastrados</a></li>
-                    <li><a href="#">Lançar Produtos</a></li>
-                    <li><a href="#">Financeiro</a></li>
-                    <li><a href="#">Clientes Fiado</a></li>
+                    <li><a href="produtos_cadastrados.php">Produtos Cadastrados</a></li>
+                    <li><a href="vendas.php">Vender Produto</a></li>
+                    <li><a href="financeiro.php">Financeiro</a></li>
+                    <li><a href="clientes_fiados.php">Clientes Fiado</a></li>
                 </ul>
             </nav>
         </div>
@@ -39,43 +51,53 @@ $con = $mysqli->query($consulta) or die($mysqli->error);
     <div class="container-cadastrados">
         <div class="table-responsive">
             <table class="table">
-                <h1>Produtos Cadastrados</h1>
                 <thead>
+                <h1>Produtos Cadastrados</h1>
                     <tr>
+                        
                         <th class="th-produto">Produto</th>
                         <th>Valor</th>
-                        <th>Editar</th>
+                        <th class="editar-produto">Editar</th>
                     </tr>
                     <?php while ($dado = $con->fetch_array()) { ?>
                         <tr>
                             <td><?php echo $dado["nome"]; ?></td>
                             <td>R$ <?php echo $dado["valor"]; ?></td>
                             <td class="editar">
-                            <a class="btn btn-sm btn-primary botao-edit" href="edit.php?id=<?php echo $dado['id']; ?>" title="Editar">
+                                <a class="btn btn-sm btn-primary botao-edit" href="edit.php?id=<?php echo $dado['id']; ?>" title="Editar">
                                     <img src="imgs/iconeEditar.png" width="25px" alt="Editar">
                                 </a>
                                 <a onclick="return confirm('Tem certeza que deseja excluir este produto?')" href="delete.php?id=<?php echo $dado['id']; ?>" title="Excluir">
                                     <img src="imgs/iconeDelete.png" width="25px" alt="Excluir">
                                 </a>
-                            </td>                      
+                            </td>
                         </tr>
                     <?php } ?>
                 </thead>
                 <tbody>
-                    <?php if (!empty($produtos)): ?>
-                        <?php foreach ($produtos as $produto): ?>
-                            <tr>
-                                <td><?php echo $produto['nome']; ?></td>
-                                <td>R$ <?php echo number_format($produto['valor'], 2, ',', '.'); ?> </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr></tr>
-                    <?php endif; ?>
-                </tbody>
+
             </table>
+            <br>
+
+            <!-- Paginação -->
+            <div class="pagination">
+             <?php if ($paginaAtual > 1 ) : ?>
+                <a href="<?php echo paginaLink($paginaAtual - 1); ?>">Anterior</a>
+             <?php endif; ?>
+        
+            <?php for ($i = 1; $i <= $totalPaginas; $i++) : ?>
+                <a href="<?php echo paginaLink($i); ?>" <?php if ($paginaAtual == $i) echo 'class="active"'; ?>><?php echo $i; ?></a>
+            <?php endfor; ?>
+
+            <?php if ($paginaAtual < $totalPaginas) : ?>
+                <a href="<?php echo paginaLink($paginaAtual + 1); ?>">Próxima</a>
+            <?php endif; ?>
         </div>
-    </div>
+            </div>
+        </div>
+
+    <!-- Adicione controles de navegação para paginação usando a função paginaLink() -->
+    
 
 </body>
 
