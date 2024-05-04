@@ -34,54 +34,102 @@ while ($produto = $resultadoProdutos->fetch_assoc()) {
                     <li><a href="produtos_cadastrados.php">Produtos Cadastrados</a></li>
                     <li><a href="vendas.php">Vender Produto</a></li>
                     <li><a href="financeiro.php">Financeiro</a></li>
-                    <li><a href="clientes_fiados.php">Clientes Fiado</a></li>
+                    <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
                 </ul>
             </nav>
         </div>
     </div>
 
     <div class="container-lancar-vendas">
-        <h1>Lançar Vendas</h1>
+    <h1>Lançar Vendas</h1>
 
-        <div class="form-venda">
-            <form action="bd_vendas.php" method="post"> <!-- Formulário de venda -->
-                <label for="produto">Selecione o produto:</label>
-                <select name="produto" id="produto">
-                    <option value="">Selecione um produto</option>
-                    <?php foreach ($produtos as $produto) : ?>
-                        <option value="<?= $produto['id'] ?>"><?= $produto['nome'] ?> - R$ <?= $produto['valor'] ?></option>
-                    <?php endforeach; ?>
-                </select>
+    <div class="form-venda">
+        <form action="bd_vendas.php" method="post"> <!-- Formulário de venda -->
+            <label for="produto">Selecione o produto:</label>
+            <select name="produto" id="produto">
+                <option value="">Selecione um produto</option>
+                <?php foreach ($produtos as $produto) : ?>
+                    <option value="<?= $produto['id'] ?>" data-preco="<?= $produto['valor'] ?>">
+                        <?= $produto['nome'] ?> - R$ <?= $produto['valor'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
 
-                <label for="quantidade">Quantidade:</label>
-                <select name="quantidade" id="quantidade">
-                    <?php for ($i = 1; $i <= 50; $i++) : ?>
-                        <option value="<?= $i ?>"><?= $i ?></option>
-                    <?php endfor; ?>
-                </select>
+            <label for="quantidade">Quantidade:</label>
+            <select name="quantidade" id="quantidade">
+                <?php for ($i = 1; $i <= 50; $i++) : ?>
+                    <option value="<?= $i ?>"><?= $i ?></option>
+                <?php endfor; ?>
+            </select>
 
-                <label>Forma de pagamento:</label>
-                <div class="pagamento-options">
-                    <input type="radio" id="pix" name="forma_pagamento" value="pix">
-                    <label for="pix">PIX</label>
+            <label>Forma de pagamento:</label>
+            <div class="pagamento-options">
+                <input type="radio" id="pix" name="forma_pagamento" value="pix">
+                <label for="pix">PIX</label>
 
-                    <input type="radio" id="cartao" name="forma_pagamento" value="cartao">
-                    <label for="cartao">Cartão</label>
+                <input type="radio" id="cartao" name="forma_pagamento" value="cartao">
+                <label for="cartao">Cartão</label>
 
-                    <input type="radio" id="dinheiro" name="forma_pagamento" value="dinheiro">
-                    <label for="dinheiro">Dinheiro</label>
+                <input type="radio" id="dinheiro" name="forma_pagamento" value="dinheiro">
+                <label for="dinheiro">Dinheiro</label>
 
-                    <input type="radio" id="fiado" name="forma_pagamento" value="fiado">
-                    <label for="fiado">Fiado</label>
-                </div>
+                <input type="radio" id="fiado" name="forma_pagamento" value="fiado">
+                <label for="fiado">Fiado</label>
+            </div>
 
-                <button class="btn-confirmar-venda" type="submit" id="btn-confirmar-venda">Confirmar Venda</button>
-            </form>
-        </div>
+            <div id="valor-recebido-container" style="display: none;">
+                <label for="valor_recebido">Valor Recebido:</label>
+               <span>R$ <input type="number" id="valor_recebido" name="valor_recebido"> </span> 
+            </div>
+             <br>
+            <div id="troco-container" style="display: none;">
+                <label for="troco">Troco:</label>
+               R$ <span id="troco"></span>
+            </div>
+<br>
+            <button class="btn-confirmar-venda" type="submit" id="btn-confirmar-venda">Confirmar Venda</button>
+        </form>
     </div>
+</div>
 
-<!--Script de alerta da venda -->
 <script>
+    // Adiciona um ouvinte de evento para monitorar as mudanças na seleção de opções de pagamento
+    var opcoesPagamento = document.querySelectorAll('input[name="forma_pagamento"]');
+    opcoesPagamento.forEach(function(opcao) {
+        opcao.addEventListener('change', function() {
+            var valorRecebidoContainer = document.getElementById('valor-recebido-container');
+            var trocoContainer = document.getElementById('troco-container');
+            if (this.value === 'dinheiro') {
+                valorRecebidoContainer.style.display = 'block';
+                trocoContainer.style.display = 'block';
+            } else {
+                valorRecebidoContainer.style.display = 'none';
+                trocoContainer.style.display = 'none';
+            }
+        });
+    });
+
+    // Adiciona um ouvinte de evento para monitorar mudanças no valor recebido
+    document.getElementById('valor_recebido').addEventListener('input', function() {
+        // Obtém o valor do produto selecionado e a quantidade
+        var precoProduto = parseFloat(document.getElementById('produto').selectedOptions[0].getAttribute('data-preco'));
+        var quantidade = parseInt(document.getElementById('quantidade').value);
+        
+        // Calcula o valor total da venda
+        var valorTotal = precoProduto * quantidade;
+        
+        // Obtém o valor recebido e converte para número
+        var valorRecebido = parseFloat(this.value);
+        
+        // Calcula o troco
+        var troco = valorRecebido - valorTotal;
+        
+        // Exibe o troco formatado com duas casas decimais
+        document.getElementById('troco').textContent = troco.toFixed(2);
+    });
+
+    <!--Script de alerta da venda -->
+
     document.getElementById('btn-confirmar-venda').addEventListener('click', function(event) {
         event.preventDefault(); // Evita o envio do formulário por padrão
 
@@ -105,7 +153,11 @@ while ($produto = $resultadoProdutos->fetch_assoc()) {
         };
         xhr.send('produto=' + produto + '&quantidade=' + quantidade + '&forma_pagamento=' + formaPagamento);
     });
+
+
+
 </script>
+
 
 
 </body>

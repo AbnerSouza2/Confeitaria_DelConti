@@ -42,7 +42,7 @@ function paginaLink($pagina) {
                     <li><a href="produtos_cadastrados.php">Produtos Cadastrados</a></li>
                     <li><a href="vendas.php">Vender Produto</a></li>
                     <li><a href="financeiro.php">Financeiro</a></li>
-                    <li><a href="clientes_fiados.php">Clientes Fiado</a></li>
+                    <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
                 </ul>
             </nav>
         </div>

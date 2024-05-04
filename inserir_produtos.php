@@ -30,7 +30,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
                         <li><a href="produtos_cadastrados.php">Produtos Cadastrados</a></li>
                         <li><a href="vendas.php">Vender Produto</a></li>
                         <li><a href="financeiro.php">Financeiro</a></li>
-                        <li><a href="clientes_fiados.php">Clientes Fiado</a></li>
+                        <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
                     </ul>
                 </nav>
             </div>
@@ -48,7 +48,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
                 <input type="number" id="valor_produto" name="valor_produto" placeholder="R$ " step="0.01" required>
             </div>
             <br>
-            <button class="button-inserir-produto" type="submit">Inserir Produto</button>
+            <button class="button-inserir-produto button-inserir" type="submit">Inserir Produto</button>
         </form>
        
     </div>

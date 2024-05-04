@@ -219,7 +219,7 @@ nav ul li a:hover {
 }
 
 /* Estilos para os botões */
-button {
+.button-inserir {
     padding: 20px 25px;
     background-color: #242323;
     color: #fff;
@@ -404,17 +404,19 @@ th .editar-produto {
 }
 
 .btn-confirmar-venda {
-    padding: 10px 20px;
+    padding: 15px 20px;
     background-color: #2aa306;
     color: #fff;
+    width: 100%;
     border: none;
     border-radius: 5px;
+    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .btn-confirmar-venda:hover {
-    background-color: #94ad03;
+    background-color: #e4bb03;
 }
 
 
@@ -462,4 +464,70 @@ h1 {
 
 #btn-filtro button{
     background-color: green;
+}
+
+
+
+
+
+
+
+
+
+
+
+.container-fiados {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.table {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    border-bottom: 1px solid #141313;
+    text-align: left;
+    font-weight: bold;
+}
+
+.table th {
+    background-color: #f1c70d;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+.editar {
+    width: 10%;
+}
+
+/* Estilo para o formulário de adicionar cliente fiado */
+.form-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-container label {
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.form-container input[type="text"] {
+    width: 200px;
+    margin-bottom: 10px;
 }
