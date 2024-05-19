@@ -1,78 +1,126 @@
 <?php
 include("conexao.php");
 
-$response = array();
+// Desabilitar a exibição de erros para que não interfiram na resposta JSON
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id_produto = $_POST['produto']; // Usaremos o ID do produto
-    $quantidade = $_POST['quantidade'];
-    $tipo_pagamento = $_POST['forma_pagamento'];
-    $cliente_fiado_id = $_POST['cliente_fiado']; // ID do cliente fiado
-    
-    // Buscar o nome, valor unitário e data_hora do produto
-    $consultaProduto = "SELECT nome, valor FROM produtos WHERE id = $id_produto";
-    $resultadoProduto = $mysqli->query($consultaProduto);
+// Iniciar buffer de saída para capturar quaisquer mensagens de erro
+ob_start();
 
-    // Verifica se a consulta ao produto foi realizada com sucesso
-    if (!$resultadoProduto) {
-        $response['success'] = false;
-        $response['message'] = 'Erro ao buscar o produto: ' . $mysqli->error;
-        echo json_encode($response);
-        exit; // Encerra o script
-    }
+// Detalhes da conexão ao banco de dados
+$hostname = "localhost";
+$bancodedados = "dario";
+$usuario = "root";
+$senha = "";
 
-    // Obtém os dados do produto
-    $produto = $resultadoProduto->fetch_assoc();
-    $nome_produto = $produto['nome'];
-    $valor_un = $produto['valor'];
-    
-    // Calcular o valor total da venda
-    $valor_total = $valor_un * $quantidade;
+// Instanciar o objeto Database e conectar ao banco de dados
+$database = new mysqli($hostname, $usuario, $senha, $bancodedados);
 
-    // Inserir a venda no banco de dados, incluindo a data e hora
-    $inserirVenda = "INSERT INTO vendas (id_produto, produto, quantidade, tipo_pagamento, valor_un, valor_total, data_hora, id_cliente_fiado) VALUES ('$id_produto', '$nome_produto', '$quantidade', '$tipo_pagamento', '$valor_un', '$valor_total', NOW(), '$cliente_fiado_id')";
-    
-    if ($mysqli->query($inserirVenda) === TRUE) {
-        // Venda registrada com sucesso
-        $response['success'] = true;
-        $response['message'] = 'Venda realizada com sucesso!';
-
-        // Se a forma de pagamento for "fiado", atualiza o saldo devedor do cliente fiado
-        if ($tipo_pagamento === 'fiado') {
-            // Consulta SQL para buscar o saldo devedor atual do cliente fiado
-            $consultaSaldoDevedor = "SELECT saldo_devedor FROM clientes_fiados WHERE id = $cliente_fiado_id";
-            $resultadoSaldoDevedor = $mysqli->query($consultaSaldoDevedor);
-
-            // Verifica se a consulta do saldo devedor foi realizada com sucesso
-            if (!$resultadoSaldoDevedor) {
-                $response['success'] = false;
-                $response['message'] = 'Erro ao buscar o saldo devedor do cliente fiado: ' . $mysqli->error;
-                echo json_encode($response);
-                exit; // Encerra o script
-            }
-
-            // Obtém o saldo devedor atual do cliente fiado
-            $saldo_devedor_atual = $resultadoSaldoDevedor->fetch_assoc()['saldo_devedor'];
-
-            // Atualiza o saldo devedor do cliente fiado com o valor da venda
-            $novo_saldo_devedor = $saldo_devedor_atual + $valor_total;
-            $atualizarSaldoDevedor = "UPDATE clientes_fiados SET saldo_devedor = $novo_saldo_devedor WHERE id = $cliente_fiado_id";
-
-            if ($mysqli->query($atualizarSaldoDevedor) === TRUE) {
-                // Saldo devedor atualizado com sucesso
-                $response['saldo_devedor'] = $novo_saldo_devedor;
-            } else {
-                // Erro ao atualizar o saldo devedor
-                $response['success'] = false;
-                $response['message'] = 'Erro ao atualizar saldo devedor do cliente fiado: ' . $mysqli->error;
-            }
-        }
-    } else {
-        // Erro ao registrar a venda
-        $response['success'] = false;
-        $response['message'] = 'Erro ao registrar venda: ' . $mysqli->error;
-    }
+// Verificar a conexão
+if ($database->connect_error) {
+    die("Falha na conexão com o banco de dados: " . $database->connect_error);
 }
 
-echo json_encode($response);
+$response = array("success" => false, "message" => "");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $produto = $_POST['produto'];
+    $quantidade = $_POST['quantidade'];
+    $forma_pagamento = $_POST['forma_pagamento'];
+    $cliente_fiado = isset($_POST['cliente_fiado']) ? $_POST['cliente_fiado'] : null;
+
+    // Validação dos campos
+    if (empty($produto) || empty($quantidade) || empty($forma_pagamento)) {
+        $response["message"] = "Preencha todos os campos obrigatórios.";
+        echo json_encode($response);
+        exit;
+    }
+
+    // Calcula o valor total da venda
+    $consultaProduto = "SELECT nome, valor FROM produtos WHERE id = ?";
+    $stmt = $database->prepare($consultaProduto);
+    $stmt->bind_param("i", $produto);
+    $stmt->execute();
+    $resultadoProduto = $stmt->get_result();
+
+    if (!$resultadoProduto) {
+        $response["message"] = "Erro ao preparar consulta de produto: " . $database->error;
+        error_log("Erro ao preparar consulta de produto: " . $database->error);
+        echo json_encode($response);
+        exit;
+    }
+
+    // Verifica se o produto foi encontrado
+    if ($resultadoProduto->num_rows > 0) {
+        $produtoDados = $resultadoProduto->fetch_assoc();
+        $valor_un = $produtoDados['valor'];
+        $nome_produto = $produtoDados['nome'];
+        $valor_total = $valor_un * $quantidade;
+    } else {
+        $response["message"] = "Produto não encontrado.";
+        error_log("Produto não encontrado com ID: $produto");
+        echo json_encode($response);
+        exit;
+    }
+
+    
+    // Iniciar uma transação para garantir a consistência dos dados
+    $database->begin_transaction();
+
+    // Inserir a venda no banco de dados
+    $consultaInserirVenda = "INSERT INTO vendas (id_produto, produto, quantidade, tipo_pagamento, valor_un, valor_total, data_hora, id_cliente_fiado) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)";
+    $stmt = $database->prepare($consultaInserirVenda);
+    $stmt->bind_param("isssdsi", $produto, $nome_produto, $quantidade, $forma_pagamento, $valor_un, $valor_total, $cliente_fiado);
+    $stmt->execute();
+
+    if ($stmt->affected_rows > 0) {
+        // Consultar o saldo devedor atual do cliente fiado
+        $consultaSaldoAtual = "SELECT saldo_devedor FROM clientes_fiados WHERE id = ?";
+        $stmt = $database->prepare($consultaSaldoAtual);
+        $stmt->bind_param("i", $cliente_fiado);
+        $stmt->execute();
+        $resultadoSaldoAtual = $stmt->get_result();
+
+        if ($resultadoSaldoAtual->num_rows > 0) {
+            $saldo_devedor_atual = $resultadoSaldoAtual->fetch_assoc()['saldo_devedor'];
+        } else {
+            $saldo_devedor_atual = 0;
+        }
+
+        // Calcular o novo saldo devedor do cliente fiado
+        $novo_saldo_devedor = $saldo_devedor_atual + $valor_total;
+
+        // Atualizar o saldo devedor do cliente fiado
+        $atualizarSaldo = "UPDATE clientes_fiados SET saldo_devedor = ? WHERE id = ?";
+        $stmt = $database->prepare($atualizarSaldo);
+        $stmt->bind_param("di", $novo_saldo_devedor, $cliente_fiado);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            // Commit da transação
+            $database->commit();
+            $response["success"] = true;
+            $response["message"] = "Venda registrada com sucesso.";
+        } else {
+            // Rollback em caso de erro na atualização do saldo
+            $database->rollback();
+            $response["message"] = "Erro ao atualizar o saldo devedor do cliente fiado.";
+        }
+    } else {
+        // Rollback em caso de erro na inserção da venda
+        $database->rollback();
+        $response["message"] = "Erro ao registrar venda.";
+    }
+
+    echo json_encode($response);
+    exit;
+}
+
+// Capturar qualquer saída inesperada e adicionar ao JSON de resposta para debug
+$output = ob_get_clean();
+if (!empty($output)) {
+    $response["output"] = $output;
+    echo json_encode($response);
+}
 ?>

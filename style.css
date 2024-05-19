@@ -466,15 +466,17 @@ h1 {
     background-color: green;
 }
 
+.lucroTotal td{
+    background-color: #a2f075;
+    font-weight: bold;
+
+}
 
 
 
 
 
-
-
-
-
+/*Clientes fiados*/
 
 .container-fiados {
     max-width: 1000px;

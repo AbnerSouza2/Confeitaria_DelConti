@@ -1,12 +1,17 @@
 <?php
-include("conexao.php");
+include_once("class/database.php");
+
+$database = new Database("localhost", "dario", "root", ""); // Configurar com suas próprias credenciais
+
+// Estabelece a conexão com o banco de dados
+$database->conectar();
 
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
     
     // Buscar os dados do produto no banco de dados
     $sqlSelect = "SELECT * FROM produtos WHERE id=$id";
-    $result = $mysqli->query($sqlSelect);
+    $result = $database->conexao->query($sqlSelect); // Utiliza a conexão estabelecida pela classe Database
     
     if ($result->num_rows > 0) {
         $produto = $result->fetch_assoc();
@@ -31,6 +36,7 @@ if (!empty($_GET['id'])) {
 </head>
 
 <body class="menusDel">
+    
     <div class="top-inserir">
         <div class="menu-php">
             <div class="inserir-logo-img">
@@ -39,15 +45,16 @@ if (!empty($_GET['id'])) {
             <nav class="nav-inserir-produtos">
                 <ul>
                     <li><a href="inserir_produtos.php">Inserir Produtos</a></li>
-                    <li><a href="#">Produtos Cadastrados</a></li>
-                    <li><a href="#">Lançar Produtos</a></li>
-                    <li><a href="#">Financeiro</a></li>
-                    <li><a href="#">Clientes Fiado</a></li>
+                    <li><a href="produtos_cadastrados.php">Produtos Cadastrados</a></li>
+                    <li><a href="vendas.php">Vender Produto</a></li>
+                    <li><a href="financeiro_php">Financeiro</a></li>
+                    <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
+                    <li><a href="lancar_nota.php">Lançar Notas</a></li>
                 </ul>
             </nav>
         </div>
    <div class="container-edit">
-    <form action="update.php" method="post">
+    <form id="edit-form" action="update.php" method="post">
         <input type="hidden" name="id" value="<?php echo $produto['id']; ?>">
         <h1 class="edit-title">Editar Produto</h1>
         <label for="nome" class="edit-label">Nome do Produto:</label>
@@ -64,6 +71,7 @@ if (!empty($_GET['id'])) {
             var valorInput = document.getElementById('valor');
             valorInput.value = valorInput.value.replace(',', '.');
         });
+        
     </script>
     
 </body>

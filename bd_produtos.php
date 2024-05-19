@@ -3,47 +3,54 @@ session_start();
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
+    // Se não estiver logado, redireciona para a página de login
     header("Location: index.php");
     exit();
 }
+
+// Inicializa o array de resposta
+$response = array();
 
 // Verifica se o formulário foi submetido
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verifica se os campos necessários estão definidos
     if (isset($_POST["nome_produto"]) && isset($_POST["valor_produto"])) {
-        // Conecta-se ao banco de dados
+        // Inclui a classe Database
+        include("class/Database.php");
+
+        // Configurações de conexão
         $hostname = "localhost";
         $bancodedados = "dario";
         $usuario = "root";
         $senha = "";
 
-        // Estabelece a conexão com o banco de dados
-        $mysqli = new mysqli($hostname, $usuario, $senha, $bancodedados);
-
-        // Verifica se houve erro na conexão
-        if ($mysqli->connect_errno) {
-            echo "Falha ao conectar: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-            exit();
-        }
+        // Cria uma nova instância da classe Database
+        $database = new Database($hostname, $bancodedados, $usuario, $senha);
+        $database->conectar();
 
         // Escapa os valores para evitar injeção de SQL
-        $nome_produto = $mysqli->real_escape_string($_POST["nome_produto"]);
-        $valor_produto = $mysqli->real_escape_string($_POST["valor_produto"]);
-
+        $nome_produto = $database->conexao->real_escape_string($_POST["nome_produto"]);
+        $valor_produto = $database->conexao->real_escape_string($_POST["valor_produto"]);
         $valor_produto = str_replace(",", ".", $_POST["valor_produto"]);
 
         // Insere os dados na tabela "produtos"
         $sql = "INSERT INTO produtos (nome, valor) VALUES ('$nome_produto', '$valor_produto')";
-        if ($mysqli->query($sql) === true) {
-            echo "Produto inserido com sucesso!";
+        if ($database->conexao->query($sql) === true) {
+            $response['success'] = true;
+            $response['message'] = "Produto inserido com sucesso!";
         } else {
-            echo "Erro ao inserir produto: " . $mysqli->error;
+            $response['success'] = false;
+            $response['message'] = "Erro ao inserir produto: " . $database->conexao->error;
         }
 
         // Fecha a conexão
-        $mysqli->close();
+        $database->fecharConexao();
     } else {
-        echo "Todos os campos devem ser preenchidos!";
+        $response['success'] = false;
+        $response['message'] = "Todos os campos devem ser preenchidos!";
     }
+
+    // Retorna a resposta como JSON
+    echo json_encode($response);
 }
 ?>

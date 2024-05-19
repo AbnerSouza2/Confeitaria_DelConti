@@ -1,6 +1,15 @@
 <?php
 include("conexao.php");
+session_start(); // Inicia a sessão
 
+// Verifica se existe uma mensagem na sessão
+if(isset($_SESSION['mensagem'])) {
+    // Exibe o alerta com a mensagem
+    echo "<script>alert('" . $_SESSION['mensagem'] . "');</script>";
+
+    // Remove a mensagem da sessão para não exibi-la novamente
+    unset($_SESSION['mensagem']);
+}
 // Configurações de paginação
 $produtosPorPagina = 10;
 $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
@@ -8,10 +17,12 @@ $offset = ($paginaAtual - 1) * $produtosPorPagina;
 
 // Consulta SQL com limitação de resultados
 $consulta = "SELECT * FROM produtos LIMIT $offset, $produtosPorPagina";
-$con = $mysqli->query($consulta) or die($mysqli->error);
+$con = $database->executarConsulta($consulta) or die($database->conexao->error);
+
 
 // Contagem total de produtos
-$totalProdutos = $mysqli->query("SELECT COUNT(*) AS total FROM produtos")->fetch_assoc()['total'];
+$totalProdutos = $database->executarConsulta("SELECT COUNT(*) AS total FROM produtos")->fetch_assoc()['total'];
+
 $totalPaginas = ceil($totalProdutos / $produtosPorPagina);
 
 // Função para gerar links de paginação
@@ -43,6 +54,7 @@ function paginaLink($pagina) {
                     <li><a href="vendas.php">Vender Produto</a></li>
                     <li><a href="financeiro.php">Financeiro</a></li>
                     <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
+                     <li><a href="lancar_nota.php">Lançar Notas</a></li>
                 </ul>
             </nav>
         </div>

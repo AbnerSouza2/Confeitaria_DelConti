@@ -1,5 +1,15 @@
 <?php
-include("conexao.php");
+include_once("Class/database.php");
+
+// Configuração da conexão
+$hostname = "localhost";
+$bancodedados = "dario";
+$usuario = "root";
+$senha = "";
+
+// Cria uma instância da classe Database e conecta
+$database = new Database($hostname, $bancodedados, $usuario, $senha);
+$database->conectar(); // Estabelece a conexão com o banco de dados
 
 // Verifica se os dados foram enviados via POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -12,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Validação simples dos dados
         if (!empty($nome) && !empty($telefone)) {
             // Insere os dados no banco de dados
-            $consulta = $mysqli->prepare("INSERT INTO clientes_fiados (nome, telefone) VALUES (?, ?)");
+            $consulta = $database->conexao->prepare("INSERT INTO clientes_fiados (nome, telefone) VALUES (?, ?)");
 
             // Verifica se a consulta foi preparada com sucesso
             if ($consulta) {
@@ -21,15 +31,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $resultado = $consulta->execute();
 
                 if ($resultado) {
-                    echo "<script>alert('Cliente fiado adicionado com sucesso!');</script>";
+                    $_SESSION['sucesso'] = 'Cliente fiado adicionado com sucesso!';
                 } else {
-                    echo "<script>alert('Erro ao adicionar cliente fiado: " . $mysqli->error . "');</script>";
+                    echo "<script>alert('Erro ao adicionar cliente fiado: " . $database->conexao->error . "');</script>";
                 }
 
                 // Fecha a consulta
                 $consulta->close();
             } else {
-                echo "Erro ao preparar a consulta: " . $mysqli->error;
+                echo "Erro ao preparar a consulta: " . $database->conexao->error;
             }
         } else {
             echo "<script>alert('Por favor, preencha todos os campos!');</script>";
@@ -46,11 +56,20 @@ function paginaLink($pagina) {
 
 // Definir variáveis de paginação
 $clientesPorPagina = 10;
-$sqlTotalClientes = "SELECT COUNT(*) AS total FROM clientes_fiados";
-$resultTotalClientes = $mysqli->query($sqlTotalClientes);
-$totalClientes = $resultTotalClientes->fetch_assoc()['total'];
-$totalPaginas = ceil($totalClientes / $clientesPorPagina);
 $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+$offset = ($paginaAtual - 1) * $clientesPorPagina;
+
+// Consulta SQL para obter os clientes fiados com seus saldos devedores
+$sqlClientes = "SELECT cf.id, cf.nome, cf.telefone, 
+                      IFNULL(SUM(vf.valor_total), 0) AS saldo_devedor
+                FROM clientes_fiados cf
+                LEFT JOIN vendas vf ON cf.id = vf.id_cliente_fiado
+                GROUP BY cf.id
+                LIMIT $clientesPorPagina OFFSET $offset";
+
+$resultClientes = $database->conexao->query($sqlClientes);
+$totalClientes = $resultClientes->num_rows;
+$totalPaginas = ceil($totalClientes / $clientesPorPagina);
 ?>
 
 <!DOCTYPE html>
@@ -76,6 +95,7 @@ $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
                     <li><a href="vendas.php">Vender Produto</a></li>
                     <li><a href="financeiro.php">Financeiro</a></li>
                     <li><a href="clientes_fiados.php">Clientes Fiado</a></li>
+                    <li><a href="lancar_nota.php">Lançar Notas</a></li>
                 </ul>
             </nav>
         </div>
@@ -100,29 +120,25 @@ $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
                         <th>Nome</th>
                         <th>Telefone</th>
                         <th style="color: orange;">Saldo Devedor</th>
+                        <th>Editar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Lista de clientes fiados -->
                     <?php
-                    $offset = ($paginaAtual - 1) * $clientesPorPagina;
-
-                    // Consulta SQL para obter os clientes da página atual
-                    $sqlClientes = "SELECT * FROM clientes_fiados LIMIT $clientesPorPagina OFFSET $offset";
-                    $resultClientes = $mysqli->query($sqlClientes);
-
                     while ($cliente = $resultClientes->fetch_assoc()) {
-                        // Consulta SQL para calcular o saldo devedor do cliente atual
-                        $id_cliente = $cliente['id'];
-                        $sqlSaldoDevedor = "SELECT IFNULL(SUM(valor_total), 0) AS saldo_devedor FROM vendas WHERE id_cliente_fiado = $id_cliente";
-                        $resultSaldoDevedor = $mysqli->query($sqlSaldoDevedor);
-                        $saldo_devedor = $resultSaldoDevedor->fetch_assoc()['saldo_devedor'];
-
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($cliente['nome']) . "</td>";
                         echo "<td>" . htmlspecialchars($cliente['telefone']) . "</td>";
-                        // Exibe o saldo devedor
-                        echo "<td style='color: orange;'>R$ " . number_format($saldo_devedor, 2, ',', '.') . "</td>";
+                        echo "<td style='color: orange;'>R$ " . number_format($cliente['saldo_devedor'], 2, ',', '.') . "</td>";
+                        echo '<td class="editar">
+                            <a class="btn btn-sm btn-primary botao-edit" href="editFiado.php?id=' . $cliente['id'] . '" title="Editar">
+                                <img src="imgs/iconeEditar.png" width="25px" alt="Editar">
+                            </a>
+                            <a onclick="return confirm(\'Tem certeza que deseja excluir este cliente?\')" href="delete_fiado.php?id=' . $cliente['id'] . '" title="Excluir">
+                                <img src="imgs/iconeDelete.png" width="25px" alt="Excluir">
+                            </a>
+                            </td>';
                         echo "</tr>";
                     }
                     ?>
@@ -147,3 +163,7 @@ $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 </body>
 
 </html>
+
+<?php
+$database->fecharConexao();
+?>

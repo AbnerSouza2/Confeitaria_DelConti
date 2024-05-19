@@ -1,37 +1,55 @@
 <?php
 include("conexao.php");
+session_start(); // Inicia a sessão
+
+// Verifique se os detalhes do banco de dados estão corretos
+$hostname = "localhost";
+$bancodedados = "dario";
+$usuario = "root";
+$senha = "";
+
+function fetchData($database, $query) {
+    $result = $database->executarConsulta($query);
+    if (!$result) {
+        die("Erro ao buscar dados do banco de dados: " . $database->obterErro());
+    }
+    return $result;
+}
+
+// Crie uma instância da classe Database com os detalhes corretos do banco de dados
+$database = new Database($hostname, $bancodedados, $usuario, $senha);
+$database->conectar();
 
 // Consulta SQL para buscar os produtos
-$consultaProdutos = "SELECT id, nome, valor FROM produtos";
-$resultadoProdutos = $mysqli->query($consultaProdutos) or die($mysqli->error);
+$produtos = fetchData($database, "SELECT id, nome, valor FROM produtos");
 
 // Consulta SQL para buscar os clientes fiados
-$consultaClientesFiados = "SELECT id, nome FROM clientes_fiados";
-$resultadoClientesFiados = $mysqli->query($consultaClientesFiados) or die($mysqli->error);
+$clientesFiados = fetchData($database, "SELECT id, nome FROM clientes_fiados");
 
-// Armazenar os resultados em uma matriz
-$produtos = array();
-while ($produto = $resultadoProdutos->fetch_assoc()) {
-    $produtos[] = $produto;
+function resultToArray($result) {
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    return $data;
 }
 
-// Armazenar os clientes fiados em uma matriz
-$clientesFiados = array();
-while ($cliente = $resultadoClientesFiados->fetch_assoc()) {
-    $clientesFiados[] = $cliente;
-}
+// Converta os resultados das consultas em arrays associativos
+$produtosArray = resultToArray($produtos);
+$clientesFiadosArray = resultToArray($clientesFiados);
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lançar Vendas - Confeitaria</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body class="menusDel">
     <div class="top-inserir">
         <div class="menu-php">
@@ -45,11 +63,13 @@ while ($cliente = $resultadoClientesFiados->fetch_assoc()) {
                     <li><a href="vendas.php">Vender Produto</a></li>
                     <li><a href="financeiro.php">Financeiro</a></li>
                     <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
+                    <li><a href="lancar_nota.php">Lançar Notas</a></li>
                 </ul>
             </nav>
         </div>
     </div>
 
+  
     <div class="container-lancar-vendas">
         <h1>Lançar Vendas</h1>
 
@@ -115,79 +135,6 @@ while ($cliente = $resultadoClientesFiados->fetch_assoc()) {
         </div>
     </div>
 
-    <script>
-    
-    // Adiciona um ouvinte de evento para monitorar as mudanças na seleção de opções de pagamento
-    var opcoesPagamento = document.querySelectorAll('input[name="forma_pagamento"]');
-    opcoesPagamento.forEach(function(opcao) {
-        opcao.addEventListener('change', function() {
-            var valorRecebidoContainer = document.getElementById('valor-recebido-container');
-            var trocoContainer = document.getElementById('troco-container');
-            var clienteFiadoContainer = document.getElementById('cliente-fiado-container');
-
-            if (this.value === 'dinheiro') {
-                valorRecebidoContainer.style.display = 'block';
-                trocoContainer.style.display = 'block';
-                clienteFiadoContainer.style.display = 'none'; // Ocultar a seleção do cliente fiado quando não for 'Fiado'
-            } else if (this.value === 'fiado') {
-                valorRecebidoContainer.style.display = 'none';
-                trocoContainer.style.display = 'none';
-                clienteFiadoContainer.style.display = 'block'; // Exibir a seleção do cliente fiado apenas quando for 'Fiado'
-            } else {
-                valorRecebidoContainer.style.display = 'none';
-                trocoContainer.style.display = 'none';
-                clienteFiadoContainer.style.display = 'none'; // Ocultar a seleção do cliente fiado quando não for 'Fiado'
-            }
-        });
-    });
-
-    // Adiciona um ouvinte de evento para monitorar mudanças no valor recebido
-    document.getElementById('valor_recebido').addEventListener('input', function() {
-        // Obtém o valor do produto selecionado e a quantidade
-        var precoProduto = parseFloat(document.getElementById('produto').selectedOptions[0].getAttribute('data-preco'));
-        var quantidade = parseInt(document.getElementById('quantidade').value);
-
-        // Calcula o valor total da venda
-        var valorTotal = precoProduto * quantidade;
-
-        // Obtém o valor recebido e converte para número
-        var valorRecebido = parseFloat(this.value);
-
-        // Calcula o troco
-        var troco = valorRecebido - valorTotal;
-
-        // Exibe o troco formatado com duas casas decimais
-        document.getElementById('troco').textContent = troco.toFixed(2);
-    });
-
-    <!--Script de alerta da venda -->
-
-    document.getElementById('btn-confirmar-venda').addEventListener('click', function(event) {
-        event.preventDefault(); // Evita o envio do formulário por padrão
-
-        var produto = document.getElementById('produto').value;
-        var quantidade = document.getElementById('quantidade').value;
-        var formaPagamento = document.querySelector('input[name="forma_pagamento"]:checked').value;
-        var clienteFiado = document.getElementById('cliente_fiado').value;
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'bd_vendas.php', true);
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.success) {
-                    // Exibe o alerta na mesma página
-                    alert(response.message);
-                } else {
-                    alert(response.message);
-                }
-            }
-        };
-        xhr.send('produto=' + produto + '&quantidade=' + quantidade + '&forma_pagamento=' + formaPagamento + '&cliente_fiado=' + clienteFiado);
-    });
-
-    </script>
+    <script src="vendas.js"></script>
 </body>
-
 </html>
