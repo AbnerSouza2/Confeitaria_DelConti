@@ -55,14 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Defina as datas inicial e final para o dia atual
-$data_inicio = isset($_GET['data_inicio']) ? $_GET['data_inicio'] : date('Y-m-d');
-$data_fim = isset($_GET['data_fim']) ? $_GET['data_fim'] : date('Y-m-d', strtotime('+1 day'));
+
+
+
 
 // Consulta SQL para buscar as notas fiscais dentro do período especificado
 $consultaNotas = "SELECT * FROM notas_fiscais 
-                  WHERE DATE(data_hora) >= '$data_inicio' 
-                  AND DATE(data_hora) < '$data_fim' 
+                  WHERE DATE(data_hora) = CURDATE()
                   ORDER BY data_hora DESC";
 
 // Executa a consulta
@@ -120,12 +119,13 @@ if ($resultadoNotas && $resultadoNotas->num_rows > 0) {
 
         <!-- Formulário de filtro de data -->
         <form method="GET" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <label for="data_inicio">Data inicial:</label>
-            <input type="date" id="data_inicio" name="data_inicio" value="<?php echo $data_inicio; ?>">
-            <label for="data_fim">Data final:</label>
-            <input type="date" id="data_fim" name="data_fim" value="<?php echo $data_fim; ?>">
+            <label for="data_inicio_lancamento">Data inicial:</label>
+            <input type="date" id="data_inicio_lancamento" name="data_inicio_lancamento" value="<?php echo $data_inicio; ?>">
+            <label for="data_fim_lancamento">Data final:</label>
+            <input type="date" id="data_fim_lancamento" name="data_fim_lancamento" value="<?php echo $data_fim; ?>">
             <button type="submit" style="padding: 5px 10px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Filtrar</button>
         </form>
+
         <br>
 
         <!-- Tabela de notas fiscais -->
@@ -136,6 +136,7 @@ if ($resultadoNotas && $resultadoNotas->num_rows > 0) {
                         <th>Data e Hora</th>
                         <th>Empresa</th>
                         <th>Valor da Nota</th>
+                        <th>Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -147,10 +148,17 @@ if ($resultadoNotas && $resultadoNotas->num_rows > 0) {
                             <td><?php echo $nota['data_hora']; ?></td>
                             <td><?php echo $nota['empresa']; ?></td>
                             <td>R$ <?php echo number_format($nota['valor_nota'], 2, ',', '.'); ?></td>
+                            <td class="editar">
+                                <a onclick="return confirm('Tem certeza que deseja excluir esta nota fiscal?')" href="delete_notas.php?id=<?php echo $nota['id']; ?>" title="Excluir">
+                                    <img src="imgs/iconeDelete.png" width="25px" alt="Excluir">
+                                </a>
+                            </td>
+
+                            
                         </tr>
                     <?php endwhile; ?>
                     <tr class="totalNotas">
-                        <td colspan="2" align="right">Total das Notas:</td>
+                        <td colspan="3" align="right">Total das Notas:</td>
                         <td>R$ <?php echo number_format($totalNotas, 2, ',', '.'); ?></td>
                     </tr>
                 </tbody>

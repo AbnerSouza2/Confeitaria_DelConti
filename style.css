@@ -466,11 +466,12 @@ h1 {
     background-color: green;
 }
 
-.lucroTotal td{
+.lucroTotal td, .totalNotas td{
     background-color: #a2f075;
     font-weight: bold;
 
 }
+
 
 
 

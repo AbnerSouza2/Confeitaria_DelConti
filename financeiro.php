@@ -15,26 +15,55 @@ $database->conectar(); // Estabelece a conexão com o banco de dados
 
 $response = array();
 
-// Defina as datas inicial e final para o dia atual
-$data_inicio = date('Y-m-d');
-$data_fim = date('Y-m-d', strtotime('+1 day'));
 
-// Consulta SQL para buscar as vendas do dia atual
+// Consulta para obter a data da primeira venda no banco de dados
+$primeiraVendaQuery = "SELECT MIN(data_hora) AS primeira_venda FROM vendas";
+$resultadoPrimeiraVenda = $database->conexao->query($primeiraVendaQuery);
+
+if ($resultadoPrimeiraVenda && $resultadoPrimeiraVenda->num_rows > 0) {
+    $primeiraVenda = $resultadoPrimeiraVenda->fetch_assoc();
+    $data_inicio_padrao = date('Y-m-d', strtotime($primeiraVenda['primeira_venda']));
+} else {
+    // Se não houver vendas, defina uma data padrão
+    $data_inicio_padrao = date('Y-m-d');
+}
+
+// Defina as datas inicial e final para o dia atual, se os parâmetros GET não estiverem definidos
+$data_inicio = isset($_GET['data_inicio']) ? $_GET['data_inicio'] : $data_inicio_padrao;
+$data_fim = isset($_GET['data_fim']) ? $_GET['data_fim'] : date('Y-m-d');
+
+
+
+
+// Consulta SQL para buscar as vendas dentro do período especificado ou apenas do dia atual
 $consultaVendas = "SELECT * FROM vendas 
-                  WHERE DATE(data_hora) >= '$data_inicio' 
-                  AND DATE(data_hora) < '$data_fim' 
-                  ORDER BY data_hora DESC";
+                  WHERE DATE(data_hora) = CURDATE()"; // Esta consulta retorna apenas vendas do dia atual
+
+// Se a data de início e a data de fim forem fornecidas, a consulta será ajustada para o período especificado
+if(isset($_GET['data_inicio']) && isset($_GET['data_fim'])) {
+    $data_inicio = $_GET['data_inicio'];
+    $data_fim = $_GET['data_fim'];
+    $consultaVendas = "SELECT * FROM vendas 
+                      WHERE DATE(data_hora) >= '$data_inicio' 
+                      AND DATE(data_hora) <= '$data_fim'";
+}
+
+// Adiciona a cláusula ORDER BY para ordenar as vendas de forma decrescente pela data e hora
+$consultaVendas .= " ORDER BY data_hora DESC";
+
+
 
 // Executa a consulta
 $resultadoVendas = $database->conexao->query($consultaVendas) or die($database->conexao->error);
 
-// Calcula o lucro total de todas as vendas
+// Calcula o lucro total de todas as vendas dentro do período especificado
 $totalLucro = 0;
 if ($resultadoVendas && $resultadoVendas->num_rows > 0) {
     while ($venda = $resultadoVendas->fetch_assoc()) {
         $totalLucro += $venda['valor_total'];
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

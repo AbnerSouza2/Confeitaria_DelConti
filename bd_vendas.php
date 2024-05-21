@@ -74,29 +74,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("isssdsi", $produto, $nome_produto, $quantidade, $forma_pagamento, $valor_un, $valor_total, $cliente_fiado);
     $stmt->execute();
 
-    if ($stmt->affected_rows > 0) {
+    if ($forma_pagamento === 'fiado') {
         // Consultar o saldo devedor atual do cliente fiado
         $consultaSaldoAtual = "SELECT saldo_devedor FROM clientes_fiados WHERE id = ?";
         $stmt = $database->prepare($consultaSaldoAtual);
         $stmt->bind_param("i", $cliente_fiado);
         $stmt->execute();
         $resultadoSaldoAtual = $stmt->get_result();
-
+    
         if ($resultadoSaldoAtual->num_rows > 0) {
             $saldo_devedor_atual = $resultadoSaldoAtual->fetch_assoc()['saldo_devedor'];
         } else {
             $saldo_devedor_atual = 0;
         }
-
+    
         // Calcular o novo saldo devedor do cliente fiado
         $novo_saldo_devedor = $saldo_devedor_atual + $valor_total;
-
+    
         // Atualizar o saldo devedor do cliente fiado
         $atualizarSaldo = "UPDATE clientes_fiados SET saldo_devedor = ? WHERE id = ?";
         $stmt = $database->prepare($atualizarSaldo);
         $stmt->bind_param("di", $novo_saldo_devedor, $cliente_fiado);
         $stmt->execute();
-
+    
         if ($stmt->affected_rows > 0) {
             // Commit da transação
             $database->commit();
@@ -108,10 +108,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $response["message"] = "Erro ao atualizar o saldo devedor do cliente fiado.";
         }
     } else {
-        // Rollback em caso de erro na inserção da venda
-        $database->rollback();
-        $response["message"] = "Erro ao registrar venda.";
+        // Se a forma de pagamento não envolver um cliente fiado, a venda é registrada sem atualizar o saldo devedor
+        // Commit da transação
+        $database->commit();
+        $response["success"] = true;
+        $response["message"] = "Venda registrada com sucesso.";
     }
+    
 
     echo json_encode($response);
     exit;

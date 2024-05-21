@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     var opcoesPagamento = document.querySelectorAll('input[name="forma_pagamento"]');
     var valorRecebidoContainer = document.getElementById('valor-recebido-container');
