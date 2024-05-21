@@ -142,28 +142,32 @@ nav ul {
     list-style-type: none; 
     padding: 0;
     margin: 0;
-}
-
-nav ul li {
-    padding: 10px 20px;
-    border-bottom: 1px solid #555; /* Linha divisória entre os itens de menu */
-    margin-top: 70px;
-
+    font-weight: bold;
+    font-size: 14px;
     
 }
 
-nav ul li:last-child {
-    border-bottom: none; /* Remove a linha divisória do último item de menu */
+nav ul li {
+    margin-right: 5px;
+    margin-top: 50px;
+
 }
+
 
 nav ul li a {
     text-decoration: none;
-    display: block;
+    border-radius: 5px;
     color: rgb(250, 246, 238);
+    border: 2px solid #B59653;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
 }
 
 nav ul li a:hover {
-    background-color: #555; /* Cor de fundo quando o mouse passa por cima */
+    background-color: #887a00; /* Cor de fundo quando o mouse passa por cima */
+    
 }
 
 
