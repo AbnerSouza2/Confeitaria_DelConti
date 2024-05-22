@@ -103,7 +103,7 @@ if ($resultadoVendas && $resultadoVendas->num_rows > 0) {
             <input type="date" id="data_inicio" name="data_inicio">
             <label for="data_fim">Data final:</label>
             <input type="date" id="data_fim" name="data_fim">
-            <button type="submit" style="padding: 5px 10px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Filtrar</button>
+            <button type="submit" style="padding: 5px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Filtrar</button>
         </form>
         <br>
 

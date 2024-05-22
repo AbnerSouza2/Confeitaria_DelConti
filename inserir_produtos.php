@@ -38,7 +38,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
     </div>
 
     <div class="inserir-produtos">
-        <h1>Inserir Produtos</h1>
+        <h1>Adicionar Produto</h1>
 
                     <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -75,7 +75,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
         <input type="number" id="valor_produto" name="valor_produto" placeholder="R$ " step="0.01" required>
     </div>
     <br>
-    <button class="button-inserir-produto button-inserir" type="submit">Inserir Produto</button>
+    <button class="button-inserir-produto button-inserir" type="submit">Adicionar Produto</button>
 </form>
     </div>
 

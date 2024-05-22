@@ -108,7 +108,7 @@ function paginaLink($pagina) {
             </div>
         </div>
 
-    <!-- Adicione controles de navegação para paginação usando a função paginaLink() -->
+    
     
 
 </body>

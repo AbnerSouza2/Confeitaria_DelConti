@@ -84,15 +84,16 @@ $clientesFiadosArray = resultToArray($clientesFiados);
                         </option>
                     <?php endforeach; ?>
                 </select>
-
+                <br><br>
                 <label for="quantidade">Quantidade:</label>
                 <select name="quantidade" id="quantidade">
                     <?php for ($i = 1; $i <= 50; $i++) : ?>
                         <option value="<?= $i ?>"><?= $i ?></option>
                     <?php endfor; ?>
                 </select>
-
+                <br><br>
                 <label>Forma de pagamento:</label>
+                <br><br>
                 <div class="pagamento-options">
                     <input type="radio" id="pix" name="forma_pagamento" value="pix">
                     <label for="pix">PIX</label>

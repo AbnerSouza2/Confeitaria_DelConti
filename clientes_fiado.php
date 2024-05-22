@@ -55,7 +55,7 @@ function paginaLink($pagina) {
 }
 
 // Definir variáveis de paginação
-$clientesPorPagina = 10;
+$clientesPorPagina = 10; // Alterado para 10 clientes por página
 $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 $offset = ($paginaAtual - 1) * $clientesPorPagina;
 
@@ -64,12 +64,17 @@ $sqlClientes = "SELECT cf.id, cf.nome, cf.telefone,
                       IFNULL(SUM(vf.valor_total), 0) AS saldo_devedor
                 FROM clientes_fiados cf
                 LEFT JOIN vendas vf ON cf.id = vf.id_cliente_fiado
-                GROUP BY cf.id
-                LIMIT $clientesPorPagina OFFSET $offset";
+                GROUP BY cf.id";
 
 $resultClientes = $database->conexao->query($sqlClientes);
 $totalClientes = $resultClientes->num_rows;
+
+// Calcular o número total de páginas com base no número total de clientes e clientes por página
 $totalPaginas = ceil($totalClientes / $clientesPorPagina);
+
+// Ajuste do limite e deslocamento para a consulta para esta página
+$sqlClientesPaginacao = $sqlClientes . " LIMIT $clientesPorPagina OFFSET $offset";
+$resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
 ?>
 
 <!DOCTYPE html>
@@ -94,14 +99,14 @@ $totalPaginas = ceil($totalClientes / $clientesPorPagina);
                     <li><a href="produtos_cadastrados.php">Produtos Cadastrados</a></li>
                     <li><a href="vendas.php">Vender Produto</a></li>
                     <li><a href="financeiro.php">Financeiro</a></li>
-                    <li><a href="clientes_fiados.php">Clientes Fiado</a></li>
+                    <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
                     <li><a href="lancar_nota.php">Lançar Notas</a></li>
                 </ul>
             </nav>
         </div>
     </div>
 
-    <div class="container-cadastrados">
+    <div class="container-fiados">
         <div class="form-container">
             <h1>Adicionar Cliente</h1>
             <form id="form-cliente-fiado" action="clientes_fiado.php" method="post">
@@ -126,7 +131,7 @@ $totalPaginas = ceil($totalClientes / $clientesPorPagina);
                 <tbody>
                     <!-- Lista de clientes fiados -->
                     <?php
-                    while ($cliente = $resultClientes->fetch_assoc()) {
+                    while ($cliente = $resultClientesPaginacao->fetch_assoc()) {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($cliente['nome']) . "</td>";
                         echo "<td>" . htmlspecialchars($cliente['telefone']) . "</td>";
