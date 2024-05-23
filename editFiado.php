@@ -1,5 +1,12 @@
 <?php
-include_once("Class/database.php");
+session_start();
+include_once("conexao.php");
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
+    header("Location: index.php");
+    exit();
+}
 
 $database = new Database("localhost", "dario", "root", ""); // Configurar com suas próprias credenciais
 $database->conectar(); // Estabelece a conexão com o banco de dados
@@ -70,8 +77,9 @@ if (!empty($_GET['id'])) {
                     <li><a href="produtos_cadastrados.php">Produtos Cadastrados</a></li>
                     <li><a href="vendas.php">Vender Produto</a></li>
                     <li><a href="financeiro.php">Financeiro</a></li>
-                    <li><a href="clientes_fiados.php">Clientes Fiado</a></li>
+                    <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
                     <li><a href="lancar_nota.php">Lançar Notas</a></li>
+                    <li><a href="logout.php" class="fecharCaixa" ><img src="imgs/fecharCaixa.png" width="40px" alt="">Fechar Caixa</a></li>
                 </ul>
             </nav>
         </div>

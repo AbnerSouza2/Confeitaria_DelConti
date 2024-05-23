@@ -373,7 +373,7 @@ th .editar-produto {
     border: 1px solid #ccc;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
+    max-width: 400px;
     width: 100%;
    
 }
@@ -512,6 +512,12 @@ h1 {
     background-color: #fff;
     overflow-x: auto; /* Adicionado para rolar horizontalmente se necessário */
 }
+.container-fiados h2{
+
+    font-weight: bold;
+    font-size: 36px;
+    
+}
 
 .table {
     width: 100%;
@@ -560,4 +566,16 @@ h1 {
     margin-bottom: 10px;
 }
 
+#form-cliente-fiado input{
+    height: 15px;
+     
+}
 
+.fecharCaixa {
+    background-color: red;
+    color: white;
+    padding: 10px 15px;
+    height: 55px;
+
+    
+}

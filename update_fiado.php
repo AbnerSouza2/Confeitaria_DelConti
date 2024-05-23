@@ -1,5 +1,13 @@
 <?php
 include_once("Class/database.php");
+session_start();
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
+    // Redireciona para a página de login
+    header("Location: login.php");
+    exit();
+}
 
 $database = new Database("localhost", "dario", "root", ""); // Configurar com suas próprias credenciais
 $database->conectar(); // Estabelece a conexão com o banco de dados
@@ -32,6 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($resultSelect->num_rows > 0) {
                 $cliente = $resultSelect->fetch_assoc();
+                
+
             } else {
                 echo "Erro ao buscar os dados atualizados do cliente fiado.";
                 exit;
@@ -90,6 +100,7 @@ if (!empty($_GET['id'])) {
                     <li><a href="financeiro.php">Financeiro</a></li>
                     <li><a href="clientes_fiados.php">Clientes Fiado</a></li>
                     <li><a href="lancar_nota.php">Lançar Notas</a></li>
+                    <li><a href="logout.php">Fechar Caixa</a></li>
                 </ul>
             </nav>
         </div>

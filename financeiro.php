@@ -1,13 +1,12 @@
 <?php
 session_start();
+include_once("conexao.php");
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
     header("Location: index.php");
     exit();
 }
-
-include_once("class/database.php");
 
 // Criando uma nova instância da classe Database
 $database = new Database("localhost", "dario", "root", "");
@@ -89,6 +88,7 @@ if ($resultadoVendas && $resultadoVendas->num_rows > 0) {
                     <li><a href="financeiro.php">Financeiro</a></li>
                     <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
                     <li><a href="lancar_nota.php">Lançar Notas</a></li>
+                    <li><a href="logout.php" class="fecharCaixa" ><img src="imgs/fecharCaixa.png" width="40px" alt="">Fechar Caixa</a></li>
                 </ul>
             </nav>
         </div>

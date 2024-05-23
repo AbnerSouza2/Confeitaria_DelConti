@@ -17,7 +17,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     if ($resultadoVendas) {
         $total_vendas = $resultadoVendas->fetch_assoc()['total_vendas'];
 
-        if ($total_vendas > 0) {
+        if ($total_vendas = 0) {
             // Existem vendas relacionadas a este cliente, não é possível excluir
             $_SESSION['alerta'] = 'Este cliente possui vendas relacionadas. Não é possível excluí-lo.';
             header('Location: clientes_fiado.php');

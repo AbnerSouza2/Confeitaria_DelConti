@@ -1,6 +1,14 @@
 <?php
-include("conexao.php");
-session_start(); // Inicia a sessão
+session_start();
+include_once("conexao.php");
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
+    header("Location: index.php");
+    exit();
+}
+
+
 
 // Verifique se os detalhes do banco de dados estão corretos
 $hostname = "localhost";
@@ -64,6 +72,7 @@ $clientesFiadosArray = resultToArray($clientesFiados);
                     <li><a href="financeiro.php">Financeiro</a></li>
                     <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
                     <li><a href="lancar_nota.php">Lançar Notas</a></li>
+                    <li><a href="logout.php" class="fecharCaixa" ><img src="imgs/fecharCaixa.png" width="40px" alt="">Fechar Caixa</a></li>
                 </ul>
             </nav>
         </div>

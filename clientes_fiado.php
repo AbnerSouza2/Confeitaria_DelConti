@@ -1,11 +1,20 @@
 <?php
-include_once("Class/database.php");
+session_start();
+include_once("conexao.php");
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
+    header("Location: index.php");
+    exit();
+}
 
 // Configuração da conexão
 $hostname = "localhost";
 $bancodedados = "dario";
 $usuario = "root";
 $senha = "";
+
+
 
 // Cria uma instância da classe Database e conecta
 $database = new Database($hostname, $bancodedados, $usuario, $senha);
@@ -60,19 +69,17 @@ $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 $offset = ($paginaAtual - 1) * $clientesPorPagina;
 
 // Consulta SQL para obter os clientes fiados com seus saldos devedores
-$sqlClientes = "SELECT cf.id, cf.nome, cf.telefone, 
-                      IFNULL(SUM(vf.valor_total), 0) AS saldo_devedor
-                FROM clientes_fiados cf
-                LEFT JOIN vendas vf ON cf.id = vf.id_cliente_fiado
-                GROUP BY cf.id";
+$sqlClientes = "SELECT id, nome, telefone, saldo_devedor
+                FROM clientes_fiados";
+
 
 $resultClientes = $database->conexao->query($sqlClientes);
 $totalClientes = $resultClientes->num_rows;
 
-// Calcular o número total de páginas com base no número total de clientes e clientes por página
+
 $totalPaginas = ceil($totalClientes / $clientesPorPagina);
 
-// Ajuste do limite e deslocamento para a consulta para esta página
+
 $sqlClientesPaginacao = $sqlClientes . " LIMIT $clientesPorPagina OFFSET $offset";
 $resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
 ?>
@@ -85,6 +92,7 @@ $resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes Fiados - Confeitaria</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
 
 <body class="menusDel">
@@ -101,6 +109,8 @@ $resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
                     <li><a href="financeiro.php">Financeiro</a></li>
                     <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
                     <li><a href="lancar_nota.php">Lançar Notas</a></li>
+                    <li><a href="logout.php" class="fecharCaixa" ><img src="imgs/fecharCaixa.png" width="40px" alt="">Fechar Caixa</a></li>
+
                 </ul>
             </nav>
         </div>
@@ -114,13 +124,14 @@ $resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
                 <input type="tel" id="telefone" name="telefone" placeholder="Telefone do Cliente" pattern="[0-9]{10,11}" required>
                 <button type="submit">Adicionar Cliente</button>
             </form>
+            <h2>Clientes Fiados</h2>
         </div>
 
-        <h2>Clientes Fiados</h2>
+       
 
         <div class="table-responsive">
-            <table class="table">
-                <thead>
+            <table class="table">             
+                <thead>      
                     <tr>
                         <th>Nome</th>
                         <th>Telefone</th>
@@ -131,6 +142,10 @@ $resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
                 <tbody>
                     <!-- Lista de clientes fiados -->
                     <?php
+                    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+                    header("Cache-Control: post-check=0, pre-check=0", false);
+                    header("Pragma: no-cache");
+                    
                     while ($cliente = $resultClientesPaginacao->fetch_assoc()) {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($cliente['nome']) . "</td>";

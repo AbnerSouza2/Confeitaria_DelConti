@@ -83,6 +83,35 @@ class Database {
     }
 
 
+    public static function realizarLogout() {
+        session_start(); // Inicia a sessão
+
+        // Destruir todas as variáveis de sessão
+        $_SESSION = array();
+
+        // Se desejar destruir a sessão completamente, é necessário limpar o cookie de sessão
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+
+        // Destruir a sessão
+        session_destroy();
+
+        // Redirecionar para o index.php
+        header("Location: index.php");
+        exit();
+    }
+
+
+
 
 }
+
+
+
+
 ?>

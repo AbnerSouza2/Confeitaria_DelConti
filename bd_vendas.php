@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Rollback em caso de erro na atualização do saldo
             $database->rollback();
-            $response["message"] = "Erro ao atualizar o saldo devedor do cliente fiado.";
+            $response["message"] = "Selecione um Cliente.";
         }
     } else {
         // Se a forma de pagamento não envolver um cliente fiado, a venda é registrada sem atualizar o saldo devedor
