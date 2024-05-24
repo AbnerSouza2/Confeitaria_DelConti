@@ -55,14 +55,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Consulta SQL para buscar as notas fiscais apenas do dia atual
+$consultaNotas = "SELECT * FROM notas_fiscais WHERE DATE(data_hora) = CURDATE()";
 
+// Se a data de início e a data de fim forem fornecidas, a consulta será ajustada para o período especificado
+if(isset($_GET['data_inicio_lancamento']) && isset($_GET['data_fim_lancamento'])) {
+    $data_inicio = $_GET['data_inicio_lancamento'];
+    $data_fim = $_GET['data_fim_lancamento'];
+    $consultaNotas = "SELECT * FROM notas_fiscais 
+                      WHERE DATE(data_hora) >= '$data_inicio' 
+                      AND DATE(data_hora) <= '$data_fim'";
+}
 
-
-
-// Consulta SQL para buscar as notas fiscais dentro do período especificado
-$consultaNotas = "SELECT * FROM notas_fiscais 
-                  WHERE DATE(data_hora) = CURDATE()
-                  ORDER BY data_hora DESC";
+// Adiciona a cláusula ORDER BY para ordenar as notas fiscais de forma decrescente pela data e hora
+$consultaNotas .= " ORDER BY data_hora DESC";
 
 // Executa a consulta
 $resultadoNotas = $database->conexao->query($consultaNotas) or die($database->conexao->error);
@@ -105,12 +111,12 @@ if ($resultadoNotas && $resultadoNotas->num_rows > 0) {
         </div>
     </div>
 
-    <div class="container-financeiro">
-        <h1>Notas Fiscais</h1>
+    <div class="container-notas">
+       
 
         <!-- Formulário de adição de nota fiscal -->
         <div class="form-container">
-            <h2>Adicionar Nota Fiscal</h2>
+             <h1>Notas Fiscais</h1>
             <form id="form-nota-fiscal" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <input type="text" id="empresa" name="empresa" placeholder="Empresa" required>
                 <input type="number" id="valor_nota" name="valor_nota" placeholder="Valor da Nota" step="0.01" required>
@@ -150,7 +156,7 @@ if ($resultadoNotas && $resultadoNotas->num_rows > 0) {
                             <td><?php echo $nota['empresa']; ?></td>
                             <td>R$ <?php echo number_format($nota['valor_nota'], 2, ',', '.'); ?></td>
                             <td class="editar">
-                                <a onclick="return confirm('Tem certeza que deseja excluir esta nota fiscal?')" href="delete_notas.php?id=<?php echo $nota['id']; ?>" title="Excluir">
+                                <a onclick="return confirm('Tem certeza que deseja excluir esta nota fiscal?')" href="deletes/delete_notas.php?id=<?php echo $nota['id']; ?>" title="Excluir">
                                     <img src="imgs/iconeDelete.png" width="25px" alt="Excluir">
                                 </a>
                             </td>

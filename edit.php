@@ -62,7 +62,7 @@ if (!empty($_GET['id'])) {
             </nav>
         </div>
    <div class="container-edit">
-    <form id="edit-form" action="update.php" method="post">
+    <form id="edit-form" action="updates/update.php" method="post">
         <input type="hidden" name="id" value="<?php echo $produto['id']; ?>">
         <h1 class="edit-title">Editar Produto</h1>
         <label for="nome" class="edit-label">Nome do Produto:</label>

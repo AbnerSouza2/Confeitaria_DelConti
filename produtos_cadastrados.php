@@ -87,7 +87,7 @@ function paginaLink($pagina) {
                                 <a class="btn btn-sm btn-primary botao-edit" href="edit.php?id=<?php echo $dado['id']; ?>" title="Editar">
                                     <img src="imgs/iconeEditar.png" width="25px" alt="Editar">
                                 </a>
-                                <a onclick="return confirm('Tem certeza que deseja excluir este produto?')" href="delete.php?id=<?php echo $dado['id']; ?>" title="Excluir">
+                                <a onclick="return confirm('Tem certeza que deseja excluir este produto?')" href="deletes/delete_produtos.php?id=<?php echo $dado['id']; ?>" title="Excluir">
                                     <img src="imgs/iconeDelete.png" width="25px" alt="Excluir">
                                 </a>
                             </td>

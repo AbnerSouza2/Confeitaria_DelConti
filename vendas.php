@@ -119,12 +119,12 @@ $clientesFiadosArray = resultToArray($clientesFiados);
 
                 <div id="valor-recebido-container" style="display: none;">
                     <label for="valor_recebido">Valor Recebido:</label>
-                   <span>R$ <input type="number" id="valor_recebido" name="valor_recebido"> </span> 
+                   <span>R$ <input type="number" class="valor_recebido" id="valor_recebido" name="valor_recebido"> </span> 
                 </div>
                  <br>
                 <div id="troco-container" style="display: none;">
                     <label for="troco">Troco:</label>
-                   R$ <span id="troco"></span>
+                    <b>R$</b> <span id="troco" style="color:green; font-size:19px; font-weight: bold; text-align:center;">  </span>
                 </div>
                 <br>
                 <!-- Adiciona seleção de cliente fiado -->

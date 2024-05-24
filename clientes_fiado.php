@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($resultado) {
                     $_SESSION['sucesso'] = 'Cliente fiado adicionado com sucesso!';
+                    header("Location: {$_SERVER['PHP_SELF']}");
                 } else {
                     echo "<script>alert('Erro ao adicionar cliente fiado: " . $database->conexao->error . "');</script>";
                 }
@@ -118,13 +119,14 @@ $resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
 
     <div class="container-fiados">
         <div class="form-container">
-            <h1>Adicionar Cliente</h1>
+            <h1>Clientes Fiados</h1>
+
             <form id="form-cliente-fiado" action="clientes_fiado.php" method="post">
                 <input type="text" id="nome" name="nome" placeholder="Nome do Cliente" required>
                 <input type="tel" id="telefone" name="telefone" placeholder="Telefone do Cliente" pattern="[0-9]{10,11}" required>
                 <button type="submit">Adicionar Cliente</button>
             </form>
-            <h2>Clientes Fiados</h2>
+            
         </div>
 
        
@@ -142,10 +144,7 @@ $resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
                 <tbody>
                     <!-- Lista de clientes fiados -->
                     <?php
-                    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-                    header("Cache-Control: post-check=0, pre-check=0", false);
-                    header("Pragma: no-cache");
-                    
+                  
                     while ($cliente = $resultClientesPaginacao->fetch_assoc()) {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($cliente['nome']) . "</td>";
@@ -155,7 +154,7 @@ $resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
                             <a class="btn btn-sm btn-primary botao-edit" href="editFiado.php?id=' . $cliente['id'] . '" title="Editar">
                                 <img src="imgs/iconeEditar.png" width="25px" alt="Editar">
                             </a>
-                            <a onclick="return confirm(\'Tem certeza que deseja excluir este cliente?\')" href="delete_fiado.php?id=' . $cliente['id'] . '" title="Excluir">
+                            <a onclick="return confirm(\'Tem certeza que deseja excluir este cliente?\')" href="deletes/delete_fiado.php?id=' . $cliente['id'] . '" title="Excluir">
                                 <img src="imgs/iconeDelete.png" width="25px" alt="Excluir">
                             </a>
                             </td>';

@@ -95,7 +95,9 @@ if ($resultadoVendas && $resultadoVendas->num_rows > 0) {
     </div>
 
     <div class="container-financeiro">
-        <h1>Relatório Financeiro</h1>
+        <div class="form-container">
+        <h1 >Relatório Financeiro</h1>
+        </div>
 
         <!-- Formulário de filtro de data -->
         <form method="GET" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
@@ -118,6 +120,7 @@ if ($resultadoVendas && $resultadoVendas->num_rows > 0) {
                         <th>Forma de Pagamento</th>
                         <th>Valor_Und</th>
                         <th>Valor Total</th>
+                        <th>Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -132,10 +135,15 @@ if ($resultadoVendas && $resultadoVendas->num_rows > 0) {
                             <td><?php echo $venda['tipo_pagamento']; ?></td>
                             <td><?php echo $venda['valor_un']; ?></td>
                             <td>R$ <?php echo number_format($venda['valor_total'], 2, ',', '.'); ?></td>
+                            <td class="editar">
+                            <a onclick="return confirm('Tem certeza que deseja excluir esta venda?')" href="deletes/delete_financeiro.php?id=<?php echo $venda['id']; ?>" title="Excluir">
+                                    <img src="imgs/iconeDelete.png" width="25px" alt="Excluir">
+                                </a>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                     <tr class="lucroTotal">
-                        <td colspan="5" align="right">Lucro Total:</td>
+                        <td colspan="6" align="right">Lucro Total:</td>
                         <td>R$ <?php echo number_format($totalLucro, 2, ',', '.'); ?></td>
                     </tr>
                 </tbody>
