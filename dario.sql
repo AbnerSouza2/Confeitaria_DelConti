@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 22/05/2024 às 05:34
+-- Tempo de geração: 25/05/2024 às 11:42
 -- Versão do servidor: 11.3.2-MariaDB
 -- Versão do PHP: 8.0.28
 
@@ -39,19 +39,14 @@ CREATE TABLE `clientes_fiados` (
 --
 
 INSERT INTO `clientes_fiados` (`id`, `nome`, `telefone`, `saldo_devedor`) VALUES
-(16, 'Abner de Souza', '19981344568', 95.80),
-(17, 'Jose maria', '1185412563', 45.00),
-(18, 'Marcela Ferreira', '1985426325', 112.00),
-(19, 'jjjj', '1965656565', NULL),
-(20, 'Abner de Souza', '19981344568', NULL),
-(21, 'Abner de Souza', '19981344568', NULL),
-(22, 'Carlos', '23213131321', 75.00),
-(26, 'ABNER', '4334122133', NULL),
-(30, 'sadasd', '3213123323', NULL),
-(31, 'sadasd', '3213123323', NULL),
-(32, 'sadasd', '3213123323', NULL),
-(33, 'sadasd', '3213123323', NULL),
-(34, 'ABNER', '41414141414', NULL);
+(19, 'jjjj', '1965656565', 1.00),
+(48, 'nghgf', '5453543543', 13.50),
+(49, 'gdfgdfg', '5345345335', NULL),
+(50, 'dfgdfgdgfgd', '5345345354', NULL),
+(51, 'g', '5454545455', NULL),
+(52, 'Abner de Souza', '19981344568', 20.00),
+(53, 'Abner de Souza', '19981344568', NULL),
+(63, 'Abner de Souza', '19981344568', NULL);
 
 -- --------------------------------------------------------
 
@@ -71,13 +66,12 @@ CREATE TABLE `notas_fiscais` (
 --
 
 INSERT INTO `notas_fiscais` (`id`, `empresa`, `valor_nota`, `data_hora`) VALUES
-(23, 'mercado', 3232.00, '2024-05-20 20:11:35'),
-(24, 'Sorveteria', 212.00, '2024-05-20 20:11:39'),
 (26, 'tapouer', 34.00, '2024-05-20 21:52:11'),
 (30, 'Sorveteria', 545.00, '2024-05-21 23:34:33'),
-(31, 'Sorveteria', 500.00, '2024-05-22 00:05:17'),
-(32, 'mercado', 1.00, '2024-05-22 00:25:26'),
-(33, 'mercado', 5.00, '2024-05-22 00:25:30');
+(47, 'aÃ§ougue', 2121.00, '2024-05-22 23:38:18'),
+(48, 'Sorveteria', 699.00, '2024-05-22 23:38:48'),
+(64, 'Sorveteria', 8678.00, '2024-05-24 00:13:41'),
+(65, 'Sorveteria', 250.00, '2024-05-25 06:38:08');
 
 -- --------------------------------------------------------
 
@@ -96,17 +90,16 @@ CREATE TABLE `produtos` (
 --
 
 INSERT INTO `produtos` (`id`, `nome`, `valor`) VALUES
-(20, 'Coxinha', 6.00),
+(20, 'Coxinha', 6.50),
 (21, 'Refrigerante lata 200ml', 5.00),
 (33, 'Pao', 0.80),
 (35, 'Salgado Assado', 10.00),
 (36, 'Bolo no pote', 13.50),
 (37, 'Leite', 6.50),
 (38, 'Pudim', 25.00),
-(40, 'miojo', 3.20),
-(41, 'Bombas', 2.92),
-(105, 'lilil', 87.00),
-(107, 'Coxinha', 77.00);
+(40, 'miojo', 3.25),
+(41, 'Bombasoooo', 56.00),
+(136, 'testefinal', 4.00);
 
 -- --------------------------------------------------------
 
@@ -139,7 +132,6 @@ INSERT INTO `vendas` (`id`, `data_hora`, `id_produto`, `produto`, `quantidade`, 
 (14, '2024-05-01 21:07:02', 33, 'Pao', 1, 'pix', 55.44, 55.44, NULL),
 (15, '2024-05-01 21:08:23', 33, 'Pao', 1, 'pix', 55.44, 55.44, NULL),
 (16, '2024-05-01 21:08:39', 35, 'Salgado Assado', 1, 'pix', 10.00, 10.00, NULL),
-(17, '2024-05-01 21:46:56', 21, 'Refrigerante lata 200ml', 1, 'pix', 5.00, 5.00, NULL),
 (18, '2024-05-01 21:46:57', 21, 'Refrigerante lata 200ml', 1, 'pix', 5.00, 5.00, NULL),
 (19, '2024-05-01 21:46:58', 21, 'Refrigerante lata 200ml', 1, 'pix', 5.00, 5.00, NULL),
 (20, '2024-05-01 21:46:58', 21, 'Refrigerante lata 200ml', 1, 'pix', 5.00, 5.00, NULL),
@@ -234,7 +226,6 @@ INSERT INTO `vendas` (`id`, `data_hora`, `id_produto`, `produto`, `quantidade`, 
 (150, '2024-05-20 20:27:02', 38, 'Pudim', 1, 'fiado', 25.00, 25.00, 22),
 (151, '2024-05-20 21:52:25', 41, 'Bomba', 1, 'pix', 2.91, 2.91, 0),
 (152, '2024-05-20 21:52:31', 40, 'miojo', 4, 'cartao', 3.20, 12.80, 0),
-(153, '2024-05-20 21:52:47', 38, 'Pudim', 10, 'dinheiro', 25.00, 250.00, 0),
 (154, '2024-05-20 21:52:56', 37, 'Leite', 1, 'fiado', 6.50, 6.50, 16),
 (155, '2024-05-21 22:41:10', 20, 'Coxinha', 1, 'pix', 6.00, 6.00, 0),
 (156, '2024-05-21 23:18:27', 40, 'miojo', 2, 'pix', 3.20, 6.40, 0),
@@ -246,7 +237,46 @@ INSERT INTO `vendas` (`id`, `data_hora`, `id_produto`, `produto`, `quantidade`, 
 (162, '2024-05-21 23:43:20', 20, 'Coxinha', 2, 'pix', 6.00, 12.00, 0),
 (163, '2024-05-22 00:05:07', 20, 'Coxinha', 1, 'pix', 6.00, 6.00, 0),
 (164, '2024-05-22 00:32:26', 21, 'Refrigerante lata 200ml', 1, 'pix', 5.00, 5.00, 0),
-(165, '2024-05-22 00:32:31', 33, 'Pao', 1, 'fiado', 0.80, 0.80, 16);
+(165, '2024-05-22 00:32:31', 33, 'Pao', 1, 'fiado', 0.80, 0.80, 16),
+(166, '2024-05-22 18:56:42', 20, 'Coxinha', 2, 'pix', 6.00, 12.00, 0),
+(167, '2024-05-22 21:05:45', 35, 'Salgado Assado', 1, 'fiado', 10.00, 10.00, 16),
+(168, '2024-05-22 21:06:10', 35, 'Salgado Assado', 1, 'fiado', 10.00, 10.00, 16),
+(169, '2024-05-22 21:07:12', 35, 'Salgado Assado', 1, 'fiado', 10.00, 10.00, 36),
+(170, '2024-05-22 21:07:40', 35, 'Salgado Assado', 1, 'fiado', 10.00, 10.00, 36),
+(171, '2024-05-22 21:09:12', 35, 'Salgado Assado', 1, 'fiado', 10.00, 10.00, 37),
+(172, '2024-05-22 21:11:28', 35, 'Salgado Assado', 1, 'fiado', 10.00, 10.00, 38),
+(174, '2024-05-22 21:12:28', 35, 'Salgado Assado', 1, 'fiado', 10.00, 10.00, 38),
+(175, '2024-05-22 21:49:00', 35, 'Salgado Assado', 1, 'pix', 10.00, 10.00, 0),
+(176, '2024-05-22 21:49:19', 35, 'Salgado Assado', 1, 'fiado', 10.00, 10.00, 37),
+(177, '2024-05-22 22:17:55', 21, 'Refrigerante lata 200ml', 3, 'fiado', 5.00, 15.00, 40),
+(178, '2024-05-22 23:09:59', 20, 'Coxinha', 1, 'pix', 6.00, 6.00, 0),
+(179, '2024-05-22 23:10:03', 20, 'Coxinha', 1, 'cartao', 6.00, 6.00, 0),
+(180, '2024-05-22 23:10:13', 20, 'Coxinha', 1, 'dinheiro', 6.00, 6.00, 0),
+(187, '2024-05-22 23:14:11', 20, 'Coxinha', 1, 'fiado', 6.00, 6.00, 16),
+(188, '2024-05-22 23:37:06', 21, 'Refrigerante lata 200ml', 1, 'pix', 5.00, 5.00, 0),
+(189, '2024-05-22 23:37:13', 21, 'Refrigerante lata 200ml', 1, 'fiado', 5.00, 5.00, 16),
+(190, '2024-05-22 23:37:25', 36, 'Bolo no pote', 1, 'pix', 13.50, 13.50, 0),
+(202, '2024-05-23 23:03:48', 21, 'Refrigerante lata 200ml', 1, 'pix', 5.00, 5.00, 0),
+(204, '2024-05-24 00:15:23', 36, 'Bolo no pote', 1, 'fiado', 13.50, 13.50, 48),
+(205, '2024-05-24 00:18:14', 33, 'Pao', 1, 'pix', 0.80, 0.80, 0),
+(206, '2024-05-24 00:18:39', 21, 'Refrigerante lata 200ml', 1, 'pix', 5.00, 5.00, 0),
+(207, '2024-05-24 00:24:35', 20, 'Coxinha', 1, 'pix', 6.00, 6.00, 0),
+(208, '2024-05-24 00:24:40', 35, 'Salgado Assado', 1, 'pix', 10.00, 10.00, 0),
+(209, '2024-05-24 00:27:44', 35, 'Salgado Assado', 2, 'dinheiro', 10.00, 20.00, 0),
+(210, '2024-05-24 00:30:54', 20, 'Coxinha', 1, 'pix', 6.00, 6.00, 0),
+(211, '2024-05-24 00:33:37', 20, 'Coxinha', 1, 'pix', 6.00, 6.00, 0),
+(212, '2024-05-24 00:33:44', 21, 'Refrigerante lata 200ml', 4, 'fiado', 5.00, 20.00, 52),
+(213, '2024-05-24 00:36:38', 41, 'Bombasoooo', 1, 'pix', 56.00, 56.00, 0),
+(215, '2024-05-24 00:40:30', 35, 'Salgado Assado', 4, 'pix', 10.00, 40.00, 0),
+(216, '2024-05-24 00:43:17', 20, 'Coxinha', 1, 'pix', 6.00, 6.00, 0),
+(217, '2024-05-24 00:44:27', 20, 'Coxinha', 4, 'pix', 6.00, 24.00, 0),
+(218, '2024-05-24 00:47:44', 20, 'Coxinha', 1, 'cartao', 6.00, 6.00, 0),
+(219, '2024-05-24 00:48:19', 36, 'Bolo no pote', 1, 'cartao', 13.50, 13.50, 0),
+(221, '2024-05-25 06:36:16', 35, 'Salgado Assado', 1, 'pix', 10.00, 10.00, 0),
+(222, '2024-05-25 06:36:24', 35, 'Salgado Assado', 1, 'cartao', 10.00, 10.00, 0),
+(223, '2024-05-25 06:36:32', 35, 'Salgado Assado', 1, 'dinheiro', 10.00, 10.00, 0),
+(224, '2024-05-25 06:37:02', 35, 'Salgado Assado', 1, 'fiado', 10.00, 10.00, 65),
+(225, '2024-05-25 06:37:10', 35, 'Salgado Assado', 2, 'fiado', 10.00, 20.00, 65);
 
 --
 -- Índices para tabelas despejadas
@@ -285,25 +315,25 @@ ALTER TABLE `vendas`
 -- AUTO_INCREMENT de tabela `clientes_fiados`
 --
 ALTER TABLE `clientes_fiados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de tabela `notas_fiscais`
 --
 ALTER TABLE `notas_fiscais`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
 
 --
 -- AUTO_INCREMENT de tabela `vendas`
 --
 ALTER TABLE `vendas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=226;
 
 --
 -- Restrições para tabelas despejadas
