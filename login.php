@@ -4,7 +4,7 @@ session_start();
 // Verifica se o formulário foi submetido
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verifica se os campos de login e senha estão corretos
-    if ($_POST["username"] == "teste" && $_POST["password"] == "123") {
+    if ($_POST["username"] == "dario" && $_POST["password"] == "dario555") {
         $_SESSION["logged_in"] = true;
         header("Location: inserir_produtos.php");
         exit();

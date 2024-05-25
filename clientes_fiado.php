@@ -104,12 +104,12 @@ $resultClientesPaginacao = $database->conexao->query($sqlClientesPaginacao);
             </div>
             <nav class="nav-inserir-produtos">
                 <ul>
-                    <li><a href="inserir_produtos.php">Inserir Produtos</a></li>
-                    <li><a href="produtos_cadastrados.php">Produtos Cadastrados</a></li>
-                    <li><a href="vendas.php">Vender Produto</a></li>
-                    <li><a href="financeiro.php">Financeiro</a></li>
-                    <li><a href="clientes_fiado.php">Clientes Fiado</a></li>
-                    <li><a href="lancar_nota.php">Lançar Notas</a></li>
+                <li><a href="inserir_produtos.php"><img src="features/inserirprodutos.png" width="25px" srcset="">Inserir Produtos</a></li>
+                    <li><a href="produtos_cadastrados.php"><img src="features/produtoCadastrado.png" width="25px" srcset="">Produtos Cadastrados</a></li>
+                    <li><a href="vendas.php"><img src="features/vendas.png" width="25px" srcset="">Vender Produto</a></li>
+                    <li><a href="financeiro.php"><img src="features/financeiro.png" width="25px" srcset="">Financeiro</a></li>
+                    <li><a href="clientes_fiado.php"><img src="features/clienteFiado.png" width="25px" srcset="">Clientes Fiado</a></li>
+                    <li><a href="lancar_nota.php"><img src="features/notasFiscais.png" width="25px" srcset="">Lançar Notas</a></li>
                     <li><a href="logout.php" class="fecharCaixa" ><img src="imgs/fecharCaixa.png" width="40px" alt="">Fechar Caixa</a></li>
 
                 </ul>
